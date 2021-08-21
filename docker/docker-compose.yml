@@ -1,27 +1,18 @@
 version: '3.3'
 services: 
   frontend:
-    #image: angular_image
-    build:
-      context: node
-      dockerfile: Dockerfile
-      args:
-        - HOST_APP_DIR=${HOST_APP_DIR}
-        - IMAGE_WORKDIR=${IMAGE_WORKDIR}
+    image: node:lts-alpine3.13
     user: "${UID}:${GID}"
     ports:
       - "${LOCAL_FRONT_PORT}:4200"
       - "49153:49153"
-    command: "npm run -- ng serve --host 0.0.0.0 --disable-host-check"
-    #expose:
-    #  - "8000"
+#    command: "npm run -- ng serve --host 0.0.0.0 --disable-host-check"
+    expose:
+      - "4200"
+      - "49153"
     environment:
       - .env
     volumes:
       - "./app/portafolio:/var/www/html"
     tty: true
-      #- ${PWD}/${HOST_APP_DIR}:${IMAGE_WORKDIR}
-#     networks:
-#       - front
-# networks:
-#   front:
+
