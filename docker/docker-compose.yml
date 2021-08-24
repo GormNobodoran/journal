@@ -2,7 +2,6 @@ version: '3.3'
 services: 
   frontend:
     image: node:lts-alpine3.13
-    user: "${UID}:${GID}"
     ports:
       - "${LOCAL_FRONT_PORT}:4200"
       - "49153:49153"
