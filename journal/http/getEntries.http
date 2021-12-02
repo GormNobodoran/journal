@@ -1,0 +1,9 @@
+#@no-log
+GET https://vue-demos-baf0b-default-rtdb.europe-west1.firebasedatabase.app/entries/ABC123.json
+Accept: application/json
+
+###
+# All
+#@no-log
+GET https://vue-demos-baf0b-default-rtdb.europe-west1.firebasedatabase.app/entries.json
+
