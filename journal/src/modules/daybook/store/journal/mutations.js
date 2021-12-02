@@ -6,8 +6,9 @@ export const stopLoading = (state) => {
     state.isLoading = false;
 }
 
-export const updateEntry = (/*state*/) => {
-
+export const updateEntry = (state, data) => {
+    const indexToUpdate = state.entries.findIndex(entry => entry.id === data.id);
+    state.entries[indexToUpdate] = data;
 }
 
 export const addEntry = (/*state*/) => {

@@ -33,13 +33,16 @@
          alt="entry-picture"
          class="img-thumbnail">
   </template>
-  <Fab icon="fa-save"/>
+  <Fab
+      icon="fa-save"
+      @on:click="saveEntry"
+  />
 </template>
 
 <script>
 import {defineAsyncComponent} from 'vue';
-import {mapGetters} from 'vuex';
-import getDayMonthYear from '../helpers/getDayMonthYear.js'
+import {mapGetters, mapActions} from 'vuex';
+import getDayMonthYear from '../helpers/getDayMonthYear.js';
 
 
 export default {
@@ -77,6 +80,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('journal', ['updateEntry']),
     loadEntry() {
       const entry = this.getEntryById(this.id);
       if(!entry) {
@@ -84,6 +88,9 @@ export default {
       }
 
       this.entry = entry;
+    },
+    async saveEntry() {
+      await this.updateEntry(this.entry);
     },
   },
   created() {
