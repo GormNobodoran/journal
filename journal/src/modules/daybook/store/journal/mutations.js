@@ -11,8 +11,8 @@ export const updateEntry = (state, data) => {
     state.entries[indexToUpdate] = data;
 }
 
-export const addEntry = (/*state*/) => {
-
+export const addEntry = (state, newEntry) => {
+    state.entries.unshift(newEntry);
 }
 
 export const deleteEntry = (/*state*/) => {

@@ -1,0 +1,7 @@
+POST https://vue-demos-baf0b-default-rtdb.europe-west1.firebasedatabase.app/entries.json
+content-type: application/json
+
+{
+  "date": "Mon Dec 06 2021",
+  "text": "proba"
+}
