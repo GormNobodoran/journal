@@ -8,6 +8,13 @@
         <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
       </div>
 
+      <input type="file"
+          @change="onSelectedImage"
+          ref="imageSelector"
+          v-show="false"
+          accept="image/png, image/jpeg"
+      />
+
       <div>
         <button v-if="entry.id"
             class="btn btn-danger mx-2"
@@ -16,7 +23,9 @@
           Borrar
           <em class="fa fa-trash-alt"></em>
         </button>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary"
+          @click="onSelectImage"
+        >
           Subir foto
           <em class="fa fa-upload"></em>
         </button>
@@ -32,7 +41,12 @@
     ></textarea>
     </div>
 
-    <img src="https://mott.pe/noticias/wp-content/uploads/2018/03/C%C3%B3mo-lograr-fotos-con-profundidad-de-campo-usando-cualquier-c%C3%A1mara-profundidad2.jpg"
+    <img v-if="entry.picture && !localImage"
+        :src="entry.picture"
+         alt="entry-picture"
+         class="img-thumbnail">
+    <img v-if="localImage"
+         :src="localImage"
          alt="entry-picture"
          class="img-thumbnail">
   </template>
@@ -47,6 +61,7 @@ import {defineAsyncComponent} from 'vue';
 import {mapGetters, mapActions} from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear.js';
 import Swal from 'sweetalert2';
+import uploadImage from '../helpers/uploadImage';
 
 export default {
   name: "EntryView.vue",
@@ -62,6 +77,8 @@ export default {
   data() {
     return {
       entry: null,
+      localImage: null,
+      file: null,
     }
   },
   computed: {
@@ -106,12 +123,15 @@ export default {
         allowOutsideClick: false,
       });
       Swal.showLoading();
+      const picture = await uploadImage(this.file);
+      this.entry.picture = picture;
       if(this.entry.id) {
         await this.updateEntry(this.entry);
       } else {
         const id = await this.createEntry(this.entry);
         this.$router.push({name: 'entry', params: {id}});
       }
+      this.file = null;
       Swal.fire('Guardado', 'Entrada registrada con éxito', 'success');
     },
     async onDeleteEntry() {
@@ -131,6 +151,21 @@ export default {
         this.$router.push({name: 'no-entry'});
         Swal.fire('Eliminado', '', 'Success');
       }
+    },
+    onSelectedImage(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        this.localImage = null;
+        this.file = null;
+        return;
+      }
+      this.file = file;
+      const fr = new FileReader();
+      fr.onload = () => this.localImage = fr.result;
+      fr.readAsDataURL(file);
+    },
+    onSelectImage() {
+      this.$refs.imageSelector.click();
     }
   },
   created() {

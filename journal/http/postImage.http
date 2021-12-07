@@ -1,0 +1,7 @@
+POST https://api.cloudinary.com/v1_1/dy9jvdigt/image/upload
+content-type: application/json
+
+{
+  "upload_preset": "curso-vue",
+  "file": ""
+}
